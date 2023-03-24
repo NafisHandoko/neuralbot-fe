@@ -28,17 +28,6 @@ function Answer(props:{text:string}) {
 function App() {
   const [input, setInput] = useState('')
 
-  // const [chats, setChats] = useState([
-  //   {
-  //     question: 'how to write lorem',
-  //     answer: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Non quibusdam libero ut consectetur sed quisquam necessitatibus consequuntur maiores tempore repudiandae?'
-  //   },
-  //   {
-  //     question: 'how to write lorem',
-  //     answer: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Non quibusdam libero ut consectetur sed quisquam necessitatibus consequuntur maiores tempore repudiandae?'
-  //   }
-  // ])
-
   enum TextType {
     QUESTION = 'question',
     ANSWER = 'answer'
@@ -70,13 +59,10 @@ function App() {
     if (resp.ok) {
       const respJson = await resp.json()
       const parsedData = respJson.bot.trim()
-      // const tempChats = chats
-      // tempChats[tempChats.length - 1].answer = parsedData
       setChats([...tempChats, {
         text: parsedData,
         type: TextType.ANSWER
       }])
-      // dispatch({ type: 'SET_QUOTE', payload: respJson })
       console.log('openai answer: ' + parsedData)
     }
 
@@ -93,29 +79,10 @@ function App() {
     <div className='text-white'>
       <div>
         {chats && chats.map((chat, index) => (
-          // <div key={index}><Question text={chat.question} /><Answer text={chat.answer} /></div>
           <div key={index}>
             {chat.type == TextType.QUESTION? <Question text={chat.text} />: <Answer text={chat.text} />}
           </div>
         ))}
-        {/* <div className='p-7 px-64'>
-          <div className='flex flex-row items-start container mx-auto gap-4'>
-            <i className="bi bi-question-circle-fill text-2xl"></i>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum consectetur quam quia dolor explicabo eligendi cum tempore molestias, optio similique fugit veritatis numquam, itaque quas esse a est doloribus quaerat delectus velit mollitia distinctio? Deserunt inventore, eum voluptatem, tempore ab sit illum ratione beatae ex rem cumque, maiores fuga dolor porro itaque vel asperiores. Non labore obcaecati error repellendus vero velit voluptatibus tenetur aut vitae corrupti sit accusamus, omnis, harum veritatis dolorem? Itaque, fuga nostrum. Quae sequi ut consectetur eveniet, minima iusto quo nesciunt dolor doloremque assumenda esse facere eos dignissimos repudiandae minus atque, voluptas distinctio qui, rem hic quaerat.</p>
-          </div>
-        </div>
-        <div className='bg-violet-600 p-7 px-64'>
-          <div className='flex flex-row items-start container mx-auto gap-4'>
-            <i className="bi bi-robot text-2xl"></i>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum consectetur quam quia dolor explicabo eligendi cum tempore molestias, optio similique fugit veritatis numquam, itaque quas esse a est doloribus quaerat delectus velit mollitia distinctio? Deserunt inventore, eum voluptatem, tempore ab sit illum ratione beatae ex rem cumque, maiores fuga dolor porro itaque vel asperiores. Non labore obcaecati error repellendus vero velit voluptatibus tenetur aut vitae corrupti sit accusamus, omnis, harum veritatis dolorem? Itaque, fuga nostrum. Quae sequi ut consectetur eveniet, minima iusto quo nesciunt dolor doloremque assumenda esse facere eos dignissimos repudiandae minus atque, voluptas distinctio qui, rem hic quaerat.</p>
-          </div>
-        </div>
-        <div className='p-7 px-64'>
-          <div className='flex flex-row items-start container mx-auto gap-4'>
-            <i className="bi bi-question-circle-fill text-2xl"></i>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum consectetur quam quia dolor explicabo eligendi cum tempore molestias, optio similique fugit veritatis numquam, itaque quas esse a est doloribus quaerat delectus velit mollitia distinctio? Deserunt inventore, eum voluptatem, tempore ab sit illum ratione beatae ex rem cumque, maiores fuga dolor porro itaque vel asperiores. Non labore obcaecati error repellendus vero velit voluptatibus tenetur aut vitae corrupti sit accusamus, omnis, harum veritatis dolorem? Itaque, fuga nostrum. Quae sequi ut consectetur eveniet, minima iusto quo nesciunt dolor doloremque assumenda esse facere eos dignissimos repudiandae minus atque, voluptas distinctio qui, rem hic quaerat.</p>
-          </div>
-        </div> */}
       </div>
       <div className='fixed bottom-5 w-full flex flex-col items-center'>
         <div className="relative w-3/5">
