@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { FormEvent, useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 // import './App.css'
@@ -39,8 +39,8 @@ function App() {
   }
   const [chats, setChats] = useState<Chats[]>([])
 
-  const handleSubmit = async () => {
-    // e.preventDefault()
+  const handleSubmit = async (e:FormEvent) => {
+    e.preventDefault()
     const tempChats = [...chats, {
       text: input,
       type: TextType.QUESTION
@@ -68,12 +68,17 @@ function App() {
 
   }
 
-  const handleKeyDown = async (e:KeyboardEvent) => {
-    console.log('masuk')
-    if (e.key === 'Enter') {
-      await handleSubmit()
-    }
-  };
+  // const handleKeyDown = async (e:KeyboardEvent) => {
+  //   console.log('masuk')
+  //   if (e.key === 'Enter') {
+  //     await handleSubmit()
+  //   }
+  // };
+
+  const testSubmit = async (e:FormEvent) => {
+    e.preventDefault()
+    console.log('submit succeed')
+  }
 
   return (
     <div className='text-white'>
@@ -85,15 +90,15 @@ function App() {
         ))}
       </div>
       <div className='fixed bottom-5 w-full flex flex-col items-center'>
-        <div className="relative w-3/5">
+        <form onSubmit={handleSubmit} className="relative w-3/5">
           {/* <div className="flex absolute inset-y-0 left-0 items-center pl-5 pointer-events-none">
             <i className="bi bi-question-circle-fill text-violet-700"></i>
           </div> */}
-          <input value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => handleKeyDown} type="text" id="simple-search" className="shadow-lg bg-white text-violet-700 border border-violet-600 text-sm rounded-lg focus:ring-violet-700 focus:border-violet-700 block w-full px-5 p-2.5 placeholder-gray-500" placeholder="Ask a question..." />
-          <button className="flex absolute inset-y-0 right-0 items-center pr-5 cursor-pointer" onClick={handleSubmit}>
+          <input value={input} onChange={(e) => setInput(e.target.value)} type="text" id="simple-search" className="shadow-lg bg-white text-violet-700 border border-violet-600 text-sm rounded-lg focus:ring-violet-700 focus:border-violet-700 block w-full px-5 p-2.5 placeholder-gray-500" placeholder="Ask a question..." />
+          <button type='submit' className="flex absolute inset-y-0 right-0 items-center pr-5 cursor-pointer">
             <i className="bi bi-send-fill text-violet-700"></i>
           </button>
-        </div>
+        </form>
       </div>
     </div>
   )
