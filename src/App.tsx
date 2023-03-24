@@ -58,7 +58,7 @@ function App() {
     })
     if (resp.ok) {
       const respJson = await resp.json()
-      const parsedData = respJson.bot.trim()
+      const parsedData = respJson.bot
       setChats([...tempChats, {
         text: parsedData,
         type: TextType.ANSWER
@@ -68,21 +68,14 @@ function App() {
 
   }
 
-  // const handleKeyDown = async (e:KeyboardEvent) => {
-  //   console.log('masuk')
-  //   if (e.key === 'Enter') {
-  //     await handleSubmit()
-  //   }
-  // };
-
   const testSubmit = async (e:FormEvent) => {
     e.preventDefault()
     console.log('submit succeed')
   }
 
   return (
-    <div className='text-white'>
-      <div>
+    <div className='text-white pb-20'>
+      <div className=''>
         {chats && chats.map((chat, index) => (
           <div key={index}>
             {chat.type == TextType.QUESTION? <Question text={chat.text} />: <Answer text={chat.text} />}
