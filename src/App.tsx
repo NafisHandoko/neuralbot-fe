@@ -66,7 +66,7 @@ function App() {
   ]
 
   const [chats, setChats] = useState<Chats[]>([])
-  const chatsContainer = useRef(null)
+  const chatsContainer = useRef<HTMLDivElement>(null)
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
@@ -87,6 +87,7 @@ function App() {
           prompt: input
         })
       })
+      // chatsContainer.current!.scrollTop = chatsContainer.current!.scrollHeight
       if (resp.ok) {
         const respJson = await resp.json()
         const parsedData = respJson.bot
@@ -96,6 +97,7 @@ function App() {
         }])
         console.log('openai answer: ' + parsedData)
         // window.scrollTo(0, document.body.scrollHeight)
+        // chatsContainer.current!.scrollTop = chatsContainer.current!.scrollHeight
       }
     }
   }
@@ -110,9 +112,24 @@ function App() {
       }]
       setChats(tempChats)
       setInput('')
-      window.scrollTo(0, document.body.scrollHeight)
+      // window.scrollTo(0, document.body.scrollHeight)
     }
+    // chatsContainer.current!.scrollTop = chatsContainer.current!.scrollHeight
   }
+
+  const testScroll = () => {
+    // chatsContainer.current!.scrollTop = chatsContainer.current!.scrollHeight
+  }
+
+  useEffect(() => {
+    // const chatsContainer = useRef<HTMLDivElement>(null)
+    // chatsContainer.current!.scrollTop = chatsContainer.current!.scrollHeight
+    const chatsContainer = document.getElementById('chats_container')
+    if (chatsContainer != null) {
+      chatsContainer.scrollTop = chatsContainer.scrollHeight
+    }
+
+  }, [chats])
 
   // return (
   //   <div className={`text-white ${chats.length ? 'pb-20' : ''}`}>
@@ -152,14 +169,16 @@ function App() {
               <i className="bi bi-robot text-3xl mb-4 text-violet-700"></i>
               <h1 className='text-violet-700 font-bold text-xl'>NeuralBot</h1>
             </div>
-            <div className='text-violet-700 w-full text-center p-5'>
+            <div className='text-violet-700 w-full text-center p-5 space-y-2'>
               <a href="https://github.com/NafisHandoko/neuralbot-fe" target='_blank' className='hover:bg-violet-700 hover:text-white w-11/12 rounded py-2 inline-block'>Repo</a>
+              <button onClick={testScroll} className='hover:bg-violet-700 hover:text-white w-11/12 rounded py-2'>Scrolldown</button>
+              <button className='hover:bg-violet-700 hover:text-white w-11/12 rounded py-2'>Clear Chats</button>
             </div>
           </div>
         </div>
         <div className='bg-violet-700 text-white w-full overflow-y-hidden relative'>
           <div>
-            {chats.length ? <div className='h-screen overflow-y-scroll pb-20' ref={chatsContainer}>
+            {chats.length ? <div className='h-screen overflow-y-scroll pb-20' ref={chatsContainer} id='chats_container'>
               {chats && chats.map((chat, index) => (
                 <div key={index}>
                   {chat.type == TextType.QUESTION ? <Question text={chat.text} /> : <Answer text={chat.text} />}
