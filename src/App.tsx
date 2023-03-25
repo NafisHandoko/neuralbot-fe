@@ -153,7 +153,7 @@ function App() {
               <h1 className='text-violet-700 font-bold text-xl'>NeuralBot</h1>
             </div>
             <div className='text-violet-700 w-full text-center p-5'>
-              <a href="https://github.com" target='_blank' className='hover:bg-violet-700 hover:text-white w-11/12 rounded py-2 inline-block'>Repo</a>
+              <a href="https://github.com/NafisHandoko/neuralbot-fe" target='_blank' className='hover:bg-violet-700 hover:text-white w-11/12 rounded py-2 inline-block'>Repo</a>
             </div>
           </div>
         </div>
