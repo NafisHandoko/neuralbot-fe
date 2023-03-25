@@ -192,7 +192,7 @@ function App() {
             </div>}
           </div>
           <div className='sticky left-0 bottom-5 w-full flex flex-col items-center'>
-            <form onSubmit={testSubmit} className="relative w-2/3">
+            <form onSubmit={handleSubmit} className="relative w-2/3">
               <div className="flex absolute inset-y-0 left-0 items-center pl-5 pointer-events-none">
                 <i className="bi bi-question-circle-fill text-violet-700"></i>
               </div>
