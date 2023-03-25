@@ -5,7 +5,7 @@ import viteLogo from '/vite.svg'
 
 function Question(props: { text: string }) {
   return (
-    <div className='p-7 px-44'>
+    <div className='p-7 md:px-44'>
       <div className='flex flex-row items-start container mx-auto gap-4'>
         <i className="bi bi-question-circle-fill text-2xl"></i>
         <p>{props.text}</p>
@@ -16,7 +16,7 @@ function Question(props: { text: string }) {
 
 function Answer(props: { text: string }) {
   return (
-    <div className='bg-violet-600 p-7 px-44'>
+    <div className='bg-violet-600 p-7 md:px-44'>
       <div className='flex flex-row items-start container mx-auto gap-4'>
         <i className="bi bi-robot text-2xl"></i>
         <p>{props.text}</p>
@@ -65,7 +65,7 @@ function App() {
     }
   ]
 
-  const [chats, setChats] = useState<Chats[]>([])
+  const [chats, setChats] = useState<Chats[]>(dummyChats)
   const chatsContainer = useRef<HTMLDivElement>(null)
 
   const handleSubmit = async (e: FormEvent) => {
@@ -163,7 +163,7 @@ function App() {
   return (
     <div className='relative max-h-screen overflow-y-hidden'>
       <div className='h-screen flex flex-row items-stretch'>
-        <div className='bg-white rounded-r-3xl text-black flex flex-col items-center w-1/5'>
+        <div className='bg-white rounded-r-3xl text-black flex flex-col items-center w-0 md:w-1/5'>
           <div className='flex flex-col items-center justify-between h-screen w-full gap-y-10 pt-5'>
             <div className='text-center'>
               <i className="bi bi-robot text-3xl mb-4 text-violet-700"></i>
@@ -193,11 +193,14 @@ function App() {
             </div>}
           </div>
           <div className='sticky left-0 bottom-5 w-full flex flex-col items-center'>
-            <form onSubmit={handleSubmit} className="relative w-2/3">
-              <div className="flex absolute inset-y-0 left-0 items-center pl-5 pointer-events-none">
+            <form onSubmit={handleSubmit} className="relative md:w-2/3">
+              {/* <div className="flex absolute inset-y-0 left-0 items-center pl-5 pointer-events-none">
                 <i className="bi bi-question-circle-fill text-violet-700"></i>
-              </div>
-              <input value={input} onChange={(e) => setInput(e.target.value)} type="text" id="simple-search" className="shadow-lg bg-white text-violet-700 border border-violet-600 text-sm rounded-lg focus:ring-violet-700 focus:border-violet-700 block w-full px-14 p-2.5 placeholder-gray-500" placeholder="Ask a question..." />
+              </div> */}
+              <button onClick={() => setChats([])} className="flex md:hidden absolute inset-y-0 left-0 items-center pl-5 cursor-pointer">
+                <i className="bi bi-trash-fill text-violet-700"></i>
+              </button>
+              <input value={input} onChange={(e) => setInput(e.target.value)} type="text" id="simple-search" className="shadow-lg bg-white text-violet-700 border border-violet-600 text-sm rounded-lg focus:ring-violet-700 focus:border-violet-700 block w-full px-14 md:px-5 p-2.5 placeholder-gray-500" placeholder="Ask a question..." />
               <button type='submit' className="flex absolute inset-y-0 right-0 items-center pr-5 cursor-pointer">
                 <i className="bi bi-send-fill text-violet-700"></i>
               </button>
