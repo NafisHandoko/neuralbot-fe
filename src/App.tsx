@@ -71,44 +71,47 @@ function App() {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     // window.scrollTo(0, document.body.scrollHeight)
-    const tempChats = [...chats, {
-      text: input,
-      type: TextType.QUESTION
-    }]
-    setChats(tempChats)
-    setInput('')
-    const resp = await fetch('http://localhost:3000/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        prompt: input
+    if (input != '') {
+      const tempChats = [...chats, {
+        text: input,
+        type: TextType.QUESTION
+      }]
+      setChats(tempChats)
+      setInput('')
+      const resp = await fetch('https://neuralbot-be.up.railway.app/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          prompt: input
+        })
       })
-    })
-    if (resp.ok) {
-      const respJson = await resp.json()
-      const parsedData = respJson.bot
-      setChats([...tempChats, {
-        text: parsedData,
-        type: TextType.ANSWER
-      }])
-      console.log('openai answer: ' + parsedData)
-      // window.scrollTo(0, document.body.scrollHeight)
+      if (resp.ok) {
+        const respJson = await resp.json()
+        const parsedData = respJson.bot
+        setChats([...tempChats, {
+          text: parsedData,
+          type: TextType.ANSWER
+        }])
+        console.log('openai answer: ' + parsedData)
+        // window.scrollTo(0, document.body.scrollHeight)
+      }
     }
-
   }
 
   const testSubmit = async (e: FormEvent) => {
     e.preventDefault()
-    console.log('submit succeed')
-    const tempChats = [...chats, {
-      text: input,
-      type: TextType.QUESTION
-    }]
-    setChats(tempChats)
-    setInput('')
-    window.scrollTo(0, document.body.scrollHeight)
+    if (input != '') {
+      console.log('submit succeed')
+      const tempChats = [...chats, {
+        text: input,
+        type: TextType.QUESTION
+      }]
+      setChats(tempChats)
+      setInput('')
+      window.scrollTo(0, document.body.scrollHeight)
+    }
   }
 
   // return (
@@ -143,12 +146,20 @@ function App() {
   return (
     <div className='relative max-h-screen overflow-y-hidden'>
       <div className='h-screen flex flex-row items-stretch'>
-        <div className='bg-white text-black flex flex-col items-center w-1/5'>
-          <div className='flex flex-col items-center gap-y-10 pt-5'></div>
+        <div className='bg-white rounded-r-3xl text-black flex flex-col items-center w-1/5'>
+          <div className='flex flex-col items-center justify-between h-screen w-full gap-y-10 pt-5'>
+            <div className='text-center'>
+              <i className="bi bi-robot text-3xl mb-4 text-violet-700"></i>
+              <h1 className='text-violet-700 font-bold text-xl'>NeuralBot</h1>
+            </div>
+            <div className='text-violet-700 w-full text-center p-5'>
+              <a href="https://github.com" target='_blank' className='hover:bg-violet-700 hover:text-white w-11/12 rounded py-2 inline-block'>Repo</a>
+            </div>
+          </div>
         </div>
-        <div className='bg-violet-700 text-white w-full overflow-y-scroll relative'>
+        <div className='bg-violet-700 text-white w-full overflow-y-hidden relative'>
           <div>
-            {chats.length ? <div className='h-screen' ref={chatsContainer}>
+            {chats.length ? <div className='h-screen overflow-y-scroll pb-20' ref={chatsContainer}>
               {chats && chats.map((chat, index) => (
                 <div key={index}>
                   {chat.type == TextType.QUESTION ? <Question text={chat.text} /> : <Answer text={chat.text} />}
