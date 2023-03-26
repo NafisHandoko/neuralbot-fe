@@ -70,7 +70,7 @@ function App() {
     }
   ]
 
-  const [chats, setChats] = useState<Chats[]>([])
+  const [chats, setChats] = useState<Chats[]>(dummyChats)
   const chatsContainer = useRef<HTMLDivElement>(null)
 
   const handleSubmit = async (e: FormEvent) => {
@@ -184,7 +184,7 @@ function App() {
         </div>
         <div className='bg-violet-700 text-white w-full overflow-y-hidden relative'>
           <div>
-            {chats.length ? <div className='h-screen overflow-y-scroll pb-20' ref={chatsContainer} id='chats_container'>
+            {chats.length ? <div className='h-screen overflow-y-scroll md:pb-20 pb-40' ref={chatsContainer} id='chats_container'>
               {chats && chats.map((chat, index) => (
                 <div key={index}>
                   {chat.role == ChatRole.USER ? <Question content={chat.content} /> : <Answer content={chat.content} />}
