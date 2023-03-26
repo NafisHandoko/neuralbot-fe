@@ -3,23 +3,28 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 // import './App.css'
 
-function Question(props: { text: string }) {
+enum URL{
+  PRODUCTION = 'https://neuralbot-be.up.railway.app/',
+  LOCAL = 'http://localhost:3000'
+}
+
+function Question(props: { content: string }) {
   return (
     <div className='p-7 md:px-44'>
       <div className='flex flex-row items-start container mx-auto gap-4'>
         <i className="bi bi-question-circle-fill text-2xl"></i>
-        <p>{props.text}</p>
+        <p>{props.content}</p>
       </div>
     </div>
   )
 }
 
-function Answer(props: { text: string }) {
+function Answer(props: { content: string }) {
   return (
     <div className='bg-violet-600 p-7 md:px-44'>
       <div className='flex flex-row items-start container mx-auto gap-4'>
         <i className="bi bi-robot text-2xl"></i>
-        <p>{props.text}</p>
+        <p>{props.content}</p>
       </div>
     </div>
   )
@@ -28,40 +33,40 @@ function Answer(props: { text: string }) {
 function App() {
   const [input, setInput] = useState('')
 
-  enum TextType {
-    QUESTION = 'question',
-    ANSWER = 'answer'
+  enum ChatRole {
+    USER = 'user',
+    ASSISTANT = 'assistant'
   }
 
   interface Chats {
-    text: string,
-    type: string
+    role: string,
+    content: string
   }
 
   const dummyChats: Chats[] = [
     {
-      text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia qui distinctio adipisci iusto quidem saepe mollitia nulla fugiat exercitationem, totam dolores asperiores et aperiam quae consequatur sunt consectetur sed fuga sequi labore voluptatum earum perferendis?',
-      type: TextType.QUESTION
+      role: ChatRole.USER,
+      content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia qui distinctio adipisci iusto quidem saepe mollitia nulla fugiat exercitationem, totam dolores asperiores et aperiam quae consequatur sunt consectetur sed fuga sequi labore voluptatum earum perferendis?'
     },
     {
-      text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia qui distinctio adipisci iusto quidem saepe mollitia nulla fugiat exercitationem, totam dolores asperiores et aperiam quae consequatur sunt consectetur sed fuga sequi labore voluptatum earum perferendis?',
-      type: TextType.ANSWER
+      role: ChatRole.ASSISTANT,
+      content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia qui distinctio adipisci iusto quidem saepe mollitia nulla fugiat exercitationem, totam dolores asperiores et aperiam quae consequatur sunt consectetur sed fuga sequi labore voluptatum earum perferendis?'
     },
     {
-      text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia qui distinctio adipisci iusto quidem saepe mollitia nulla fugiat exercitationem, totam dolores asperiores et aperiam quae consequatur sunt consectetur sed fuga sequi labore voluptatum earum perferendis?',
-      type: TextType.QUESTION
+      role: ChatRole.USER,
+      content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia qui distinctio adipisci iusto quidem saepe mollitia nulla fugiat exercitationem, totam dolores asperiores et aperiam quae consequatur sunt consectetur sed fuga sequi labore voluptatum earum perferendis?'
     },
     {
-      text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia qui distinctio adipisci iusto quidem saepe mollitia nulla fugiat exercitationem, totam dolores asperiores et aperiam quae consequatur sunt consectetur sed fuga sequi labore voluptatum earum perferendis?',
-      type: TextType.ANSWER
+      role: ChatRole.ASSISTANT,
+      content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia qui distinctio adipisci iusto quidem saepe mollitia nulla fugiat exercitationem, totam dolores asperiores et aperiam quae consequatur sunt consectetur sed fuga sequi labore voluptatum earum perferendis?'
     },
     {
-      text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia qui distinctio adipisci iusto quidem saepe mollitia nulla fugiat exercitationem, totam dolores asperiores et aperiam quae consequatur sunt consectetur sed fuga sequi labore voluptatum earum perferendis?',
-      type: TextType.QUESTION
+      role: ChatRole.USER,
+      content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia qui distinctio adipisci iusto quidem saepe mollitia nulla fugiat exercitationem, totam dolores asperiores et aperiam quae consequatur sunt consectetur sed fuga sequi labore voluptatum earum perferendis?'
     },
     {
-      text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia qui distinctio adipisci iusto quidem saepe mollitia nulla fugiat exercitationem, totam dolores asperiores et aperiam quae consequatur sunt consectetur sed fuga sequi labore voluptatum earum perferendis?',
-      type: TextType.ANSWER
+      role: ChatRole.ASSISTANT,
+      content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia qui distinctio adipisci iusto quidem saepe mollitia nulla fugiat exercitationem, totam dolores asperiores et aperiam quae consequatur sunt consectetur sed fuga sequi labore voluptatum earum perferendis?'
     }
   ]
 
@@ -73,27 +78,27 @@ function App() {
     // window.scrollTo(0, document.body.scrollHeight)
     if (input != '') {
       const tempChats = [...chats, {
-        text: input,
-        type: TextType.QUESTION
+        role: ChatRole.USER,
+        content: input
       }]
       setChats(tempChats)
       setInput('')
-      const resp = await fetch('https://neuralbot-be.up.railway.app/', {
+      const resp = await fetch(URL.LOCAL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          prompt: input
+          messages: tempChats
         })
       })
       // chatsContainer.current!.scrollTop = chatsContainer.current!.scrollHeight
       if (resp.ok) {
         const respJson = await resp.json()
-        const parsedData = respJson.bot
+        const parsedData = respJson.message
         setChats([...tempChats, {
-          text: parsedData,
-          type: TextType.ANSWER
+          role: ChatRole.ASSISTANT,
+          content: parsedData,
         }])
         console.log('openai answer: ' + parsedData)
         // window.scrollTo(0, document.body.scrollHeight)
@@ -107,8 +112,8 @@ function App() {
     if (input != '') {
       console.log('submit succeed')
       const tempChats = [...chats, {
-        text: input,
-        type: TextType.QUESTION
+        role: ChatRole.USER,
+        content: input,
       }]
       setChats(tempChats)
       setInput('')
@@ -136,7 +141,7 @@ function App() {
   //     {chats.length ? <div className='' ref={chatsContainer}>
   //       {chats && chats.map((chat, index) => (
   //         <div key={index}>
-  //           {chat.type == TextType.QUESTION ? <Question text={chat.text} /> : <Answer text={chat.text} />}
+  //           {chat.type == ChatRole.USER ? <Question text={chat.content} /> : <Answer text={chat.content} />}
   //         </div>
   //       ))}
   //     </div> : <div className='container mx-auto flex flex-col items-center justify-center h-screen w-full text-center'>
@@ -182,7 +187,7 @@ function App() {
             {chats.length ? <div className='h-screen overflow-y-scroll pb-20' ref={chatsContainer} id='chats_container'>
               {chats && chats.map((chat, index) => (
                 <div key={index}>
-                  {chat.type == TextType.QUESTION ? <Question text={chat.text} /> : <Answer text={chat.text} />}
+                  {chat.role == ChatRole.USER ? <Question content={chat.content} /> : <Answer content={chat.content} />}
                 </div>
               ))}
             </div> : <div className='container mx-auto flex flex-col items-center justify-center h-screen w-full text-center'>
