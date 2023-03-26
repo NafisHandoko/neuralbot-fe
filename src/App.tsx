@@ -70,7 +70,7 @@ function App() {
     }
   ]
 
-  const [chats, setChats] = useState<Chats[]>(dummyChats)
+  const [chats, setChats] = useState<Chats[]>([])
   const chatsContainer = useRef<HTMLDivElement>(null)
 
   const handleSubmit = async (e: FormEvent) => {
@@ -83,7 +83,7 @@ function App() {
       }]
       setChats(tempChats)
       setInput('')
-      const resp = await fetch(URL.LOCAL, {
+      const resp = await fetch(URL.PRODUCTION, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
