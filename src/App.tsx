@@ -202,7 +202,7 @@ function App() {
               {/* <div className="flex absolute inset-y-0 left-0 items-center pl-5 pointer-events-none">
                 <i className="bi bi-question-circle-fill text-violet-700"></i>
               </div> */}
-              <button onClick={() => setChats([])} className="flex md:hidden absolute inset-y-0 left-0 items-center pl-5 cursor-pointer">
+              <button type='button' onClick={() => setChats([])} className="flex md:hidden absolute inset-y-0 left-0 items-center pl-5 cursor-pointer">
                 <i className="bi bi-trash-fill text-violet-700"></i>
               </button>
               <input value={input} onChange={(e) => setInput(e.target.value)} type="text" id="simple-search" className="shadow-lg bg-white text-violet-700 border border-violet-600 text-sm rounded-lg focus:ring-violet-700 focus:border-violet-700 block w-full px-14 md:px-5 p-2.5 placeholder-gray-500" placeholder="Ask a question..." />
