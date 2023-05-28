@@ -4,7 +4,8 @@ import viteLogo from '/vite.svg'
 // import './App.css'
 
 enum URL{
-  PRODUCTION = 'https://neuralbot-be.up.railway.app/',
+  PRODUCTION_RAILWAY = 'https://neuralbot-be.up.railway.app/',
+  PRODUCTION = 'https://neuralbot-be.nafishandoko.repl.co',
   LOCAL = 'http://localhost:3000'
 }
 
